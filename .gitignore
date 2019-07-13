@@ -3,3 +3,5 @@ part1/greet/
 part1/counter/
 package-lock.json
 part2/countries/src/config
+part4/bloglist/node_modules/*
+.env
