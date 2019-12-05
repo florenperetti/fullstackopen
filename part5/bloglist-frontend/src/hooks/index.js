@@ -23,7 +23,7 @@ export const useField = (type) => {
 
 export const useResource = () => {
   const [resource, setResource] = useState('')
-  
+
   return {
 
   }

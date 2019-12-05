@@ -31,9 +31,9 @@ function App() {
   const password = useField('password')
   const [user, setUser] = useState(null)
 
-  const [ newTitle, setNewTitle ] = useState('')
-  const [ newAuthor, setNewAuthor ] = useState('')
-  const [ newUrl, setNewUrl ] = useState('')
+  const newTitle = useField('text')
+  const newAuthor = useField('text')
+  const newUrl = useField('text')
 
   const [message, setMessage] = useState(null)
   const [successfulMessage, setSuccessfulMessage] = useState(null)
@@ -72,7 +72,7 @@ function App() {
     event.preventDefault()
     try {
       const user = await loginService.login({
-        username: username.value, password: password.value,
+        username: username.fieldAttrs.value, password: password.fieldAttrs.value,
       })
 
       window.localStorage.setItem(
@@ -87,16 +87,6 @@ function App() {
     }
   }
 
-  const handleTitleChange = (event) => {
-    setNewTitle(event.target.value)
-  }
-  const handleAuthorChange = (event) => {
-    setNewAuthor(event.target.value)
-  }
-  const handleUrlChange = (event) => {
-    setNewUrl(event.target.value)
-  }
-
   const handleLogout = () => {
     setUser(null)
     window.localStorage.removeItem('loggedBlogsAppUser')
@@ -105,18 +95,15 @@ function App() {
   const inputs = [
     {
       label: 'title',
-      value: newTitle,
-      onChange: handleTitleChange
+      ...newTitle.fieldAttrs,
     },
     {
       label: 'author',
-      value: newAuthor,
-      onChange: handleAuthorChange
+      ...newAuthor.fieldAttrs,
     },
     {
       label: 'url',
-      value: newUrl,
-      onChange: handleUrlChange
+      ...newAuthor.newUrl,
     }
   ]
 
@@ -145,9 +132,9 @@ function App() {
     blogFormRef.current.toggleVisibility()
 
     const newBlog = {
-      title: newTitle,
-      author: newAuthor,
-      url: newUrl
+      title: newTitle.fieldAttrs.value,
+      author: newAuthor.fieldAttrs.value,
+      url: newUrl.fieldAttrs.value
     }
 
     blogsService
@@ -158,9 +145,9 @@ function App() {
       }).catch(error => {
         showMessage(error.response.data.error || `Information of ${newTitle} has already been removed from server`, false)
       })
-    setNewTitle('')
-    setNewAuthor('')
-    setNewUrl('')
+    newTitle.reset()
+    newAuthor.reset()
+    newUrl.reset()
   }
 
   return (
@@ -168,7 +155,7 @@ function App() {
       <Notification message={message} successful={successfulMessage}/>
       {
         user === null
-          ? <LoginForm handleLogin={handleLogin}/>
+          ? <LoginForm handleLogin={handleLogin} username={username} password={password} />
           : <LogedUserView
             handleRemoveClick={handleRemoveClick}
             handleLikeBlog={handleLikeBlog}

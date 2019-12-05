@@ -1,9 +1,6 @@
 import React from 'react'
-import { useField } from '../hooks'
 
-const LoginForm = ({ handleLogin }) => {
-  const username = useField('text')
-  const password = useField('password')
+const LoginForm = ({ handleLogin, username, password }) => {
 
   const submitHandler = (event) => {
     handleLogin(event)
