@@ -20,11 +20,3 @@ export const useField = (type) => {
     reset
   }
 }
-
-export const useResource = () => {
-  const [resource, setResource] = useState('')
-
-  return {
-
-  }
-}
