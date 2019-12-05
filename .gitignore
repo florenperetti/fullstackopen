@@ -4,6 +4,7 @@ part1/counter/
 package-lock.json
 part2/countries/src/config
 part4/bloglist/node_modules/*
-part5/custom-hooks/node_modules/*
+part5/custom-hooks/
+part5/custom-hooks-2/node_modules/*
 .env
 *.lock
