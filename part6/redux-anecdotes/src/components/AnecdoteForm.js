@@ -4,19 +4,19 @@ import {
   createAnecdote
 } from '../reducers/anecdoteReducer'
 import {
-  addNotification,
-  clearNotification
+  setNotification,
 } from '../reducers/notificationReducer'
 
 const AnecdoteForm = (props) => {
-  const addAnecdote = event => {
+  const showNotification = () => {
+    props.setNotification("you just added an anecdote", 5)
+  }
+  const addAnecdote = async event => {
     event.preventDefault()
-    props.createAnecdote(event.target.anecdote.value)
+    const content = event.target.anecdote.value
     event.target.anecdote.value = ''
-    props.addNotification("you just added an anecdote")
-    setTimeout(() => {
-      props.clearNotification()
-    }, 5000)
+    props.createAnecdote(content)
+    showNotification()
   }
   return (
     <form onSubmit={addAnecdote}>
@@ -28,8 +28,7 @@ const AnecdoteForm = (props) => {
 
 const mapDispatchToProps = {
   createAnecdote, 
-  addNotification,
-  clearNotification
+  setNotification,
 }
 
 export default connect(

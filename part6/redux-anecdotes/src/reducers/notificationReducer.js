@@ -26,3 +26,12 @@ export const addNotification = (message) => {
     data: message
   }
 }
+
+export const setNotification = (message, seconds) => {
+  return dispatch => {
+    dispatch(addNotification(message))
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, seconds*1000)
+  }
+}
