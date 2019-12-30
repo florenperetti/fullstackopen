@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, waitForElement } from '@testing-library/react'
-jest.mock('../services/blogs')
 import App from './App'
+jest.mock('../services/blogs')
 
 describe('<App />', () => {
   test('renders login form if there is no user loged in', async () => {

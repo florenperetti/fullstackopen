@@ -34,7 +34,7 @@ const blogs = [
   }
 ]
 
-let token = null
+let token = null // eslint-disable-line
 
 const setToken = newToken => {
   token = `bearer ${newToken}`

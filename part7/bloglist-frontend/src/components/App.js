@@ -74,7 +74,7 @@ function App (props) {
       props.initializeBlogs()
       props.initializeUsers()
     }
-  }, [])
+  }, []) // eslint-disable-line
 
   const showMessage = (message, successful = true) => {
     props.setNotification({ message, successful }, 4)
