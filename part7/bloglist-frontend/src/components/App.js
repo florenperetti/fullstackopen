@@ -1,10 +1,17 @@
 import React, { useEffect } from 'react'
+import {
+  BrowserRouter as Router,
+  Route
+} from 'react-router-dom'
 import Blogs from './Blogs'
 import BlogForm from './BlogForm'
-import Logout from './Logout'
 import LoginForm from './LoginForm'
 import Notification from './Notification'
 import Togglable from './Togglable'
+import Users from './Users'
+import User from './User'
+import BlogView from './BlogView'
+import Navigation from './Navigation'
 
 import { useField } from '../hooks'
 
@@ -14,17 +21,37 @@ import loginService from './../services/login'
 import { initializeBlogs, createBlog, removeBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { loginUser, logoutUser, setUserFromStore } from '../reducers/userReducer'
+import { initializeUsers } from '../reducers/usersReducer'
 import { connect } from 'react-redux'
 
-const LogedUserView = ({ inputs, handleLogout, onSubmit, formRef, handleRemoveClick, user }) => {
+const LogedUserView = ({ inputs, handleLogout, onSubmit, formRef, handleRemoveClick, user, users, blogs }) => {
+  const userById = (id) =>
+    users.find(user => user.id === id)
+  const blogById = (id) =>
+    blogs.find(blog => blog.id === id)
   return (
     <div className="content">
-      <Togglable buttonLabel="new blog" ref={formRef}>
-        <BlogForm onSubmit={onSubmit} inputs={inputs}></BlogForm>
-      </Togglable>
-      <h2 className="blogs">Blogs</h2>
-      <Blogs handleRemoveClick={handleRemoveClick}></Blogs>
-      <Logout onClick={handleLogout}></Logout>
+      <Router>
+        <Navigation handleLogout={handleLogout}></Navigation>
+        <div>
+          <Route exact path="/users" render={() => <Users users={users} />} />
+          <Route exact path="/users/:id" render={({ match }) =>
+            <User user={userById(match.params.id)} />
+          } />
+          <Route exact path="/blogs/:id" render={({ match }) =>
+            <BlogView user={user} blog={blogById(match.params.id)} handleRemoveClick={handleRemoveClick} />
+          } />
+          <Route exact path="/" render={() => (
+            <div>
+              <h2 className="blogs">Blogs</h2>
+              <Togglable buttonLabel="new blog" ref={formRef}>
+                <BlogForm onSubmit={onSubmit} inputs={inputs}></BlogForm>
+              </Togglable>
+              <Blogs></Blogs>
+            </div>
+          ) } />
+        </div>
+      </Router>
     </div>
   )
 }
@@ -41,7 +68,10 @@ function App (props) {
 
   useEffect(() => {
     props.setUserFromStore()
-    props.user.name && props.initializeBlogs()
+    if (props.user.name) {
+      props.initializeBlogs()
+      props.initializeUsers()
+    }
   }, [])
 
   const showMessage = (message, successful = true) => {
@@ -122,7 +152,6 @@ function App (props) {
 
   return (
     <div>
-      {props.user.name }
       <Notification/>
       {
         !props.user.name
@@ -133,6 +162,9 @@ function App (props) {
             inputs={inputs}
             onSubmit={handleNewBlogSubmit}
             formRef={blogFormRef}
+            user={props.user}
+            users={props.users}
+            blogs={props.blogs}
           >
           </LogedUserView>
       }
@@ -140,10 +172,12 @@ function App (props) {
   )
 }
 
-const mapStateToProps = ({ userStore }) => {
+const mapStateToProps = ({ userStore, users, blogs }) => {
   return {
-    user: userStore
+    user: userStore,
+    users,
+    blogs
   }
 }
 
-export default connect(mapStateToProps, { initializeBlogs, createBlog, removeBlog, setNotification, loginUser, logoutUser, setUserFromStore })(App)
+export default connect(mapStateToProps, { initializeBlogs, initializeUsers, createBlog, removeBlog, setNotification, loginUser, logoutUser, setUserFromStore })(App)
