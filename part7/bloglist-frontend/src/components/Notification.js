@@ -1,18 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
+import { Message } from 'semantic-ui-react'
+
 const Notification = (props) => {
   const { notification } = props
   if (!notification.message) {
     return null
   }
 
-  const className = 'message ' + (notification.successful ? '' : 'red')
+  const color = notification.successful ? 'green' : 'red'
 
   return (
-    <div className={className}>
+    <Message color={color}>
       {notification.message}
-    </div>
+    </Message>
   )
 }
 

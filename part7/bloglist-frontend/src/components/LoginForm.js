@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Form, Container, Segment, Input, Header } from 'semantic-ui-react'
 
 const LoginForm = ({ handleLogin, username, password }) => {
 
@@ -9,24 +10,28 @@ const LoginForm = ({ handleLogin, username, password }) => {
   }
 
   return (
-    <div className="login">
-      <h2>Login to the application</h2>
-      <form onSubmit={submitHandler}>
-        <div>username
-          <input
-            {...username.fieldAttrs}
-            name="Username"
-          />
-        </div>
-        <div>password
-          <input
-            {...password.fieldAttrs}
-            name="Password"
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <Container className="login">
+      <Segment>
+        <Header as="h1">Login to the application</Header>
+        <Form onSubmit={submitHandler}>
+          <Form.Field>
+            <label>Username</label>
+            <Input
+              {...username.fieldAttrs}
+              name="Username"
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Password</label>
+            <Input
+              {...password.fieldAttrs}
+              name="Password"
+            />
+          </Form.Field>
+          <Button primary type="submit">Login</Button>
+        </Form>
+      </Segment>
+    </Container>
   )
 }
 

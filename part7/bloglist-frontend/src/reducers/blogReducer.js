@@ -21,6 +21,12 @@ const reducer = (state = [], action) => {
   case 'REMOVE_BLOG':
     state = state.filter(({ id }) => action.data !== id)
     return state
+  case 'NEW_BLOG_COMMENT':
+    state = state.map(blog => blog.id === action.data.blogId ? {
+      ...blog,
+      comments: blog.comments.concat({ message: action.data.message })
+    } : blog)
+    return state
   default:
     return state
   }
@@ -71,6 +77,16 @@ export const initializeBlogs = () => {
     dispatch({
       type: 'INIT_BLOGS',
       data: sortedBlogs,
+    })
+  }
+}
+
+export const createComment = data => {
+  return async dispatch => {
+    await blogsService.createComment(data)
+    dispatch({
+      type: 'NEW_BLOG_COMMENT',
+      data
     })
   }
 }

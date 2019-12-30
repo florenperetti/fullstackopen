@@ -24,6 +24,8 @@ import { loginUser, logoutUser, setUserFromStore } from '../reducers/userReducer
 import { initializeUsers } from '../reducers/usersReducer'
 import { connect } from 'react-redux'
 
+import { Container } from 'semantic-ui-react'
+
 const LogedUserView = ({ inputs, handleLogout, onSubmit, formRef, handleRemoveClick, user, users, blogs }) => {
   const userById = (id) =>
     users.find(user => user.id === id)
@@ -33,7 +35,7 @@ const LogedUserView = ({ inputs, handleLogout, onSubmit, formRef, handleRemoveCl
     <div className="content">
       <Router>
         <Navigation handleLogout={handleLogout}></Navigation>
-        <div>
+        <Container>
           <Route exact path="/users" render={() => <Users users={users} />} />
           <Route exact path="/users/:id" render={({ match }) =>
             <User user={userById(match.params.id)} />
@@ -50,7 +52,7 @@ const LogedUserView = ({ inputs, handleLogout, onSubmit, formRef, handleRemoveCl
               <Blogs></Blogs>
             </div>
           ) } />
-        </div>
+        </Container>
       </Router>
     </div>
   )

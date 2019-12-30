@@ -1,9 +1,10 @@
 import React from 'react'
+import { Button, Form, Segment, Input } from 'semantic-ui-react'
 
 const FormInput = ({ label, value, onChange }) => (
-  <div>
-    {label}: <input value={value} onChange={onChange} />
-  </div>
+  <Form.Field>
+    <label>{label}:</label> <Input value={value} onChange={onChange} />
+  </Form.Field>
 )
 
 const BlogForm = ({ onSubmit, inputs }) => {
@@ -12,12 +13,12 @@ const BlogForm = ({ onSubmit, inputs }) => {
   )
 
   return (
-    <form onSubmit={onSubmit}>
-      {formInputs()}
-      <div>
-        <button type="submit">add blog</button>
-      </div>
-    </form>
+    <Segment>
+      <Form onSubmit={onSubmit}>
+        {formInputs()}
+        <Button primary type="submit">Add blog</Button>
+      </Form>
+    </Segment>
   )
 }
 
